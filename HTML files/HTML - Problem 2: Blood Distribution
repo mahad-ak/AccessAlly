@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        //Function is run when an input has been passed by the user
+        function doneTyping() {
+            // Dictionary to store the number of blood units of each blood type
+            blood_units = {
+                "O_negative": 0,
+                "O_positive": 0,
+                "A_negative": 0,
+                "A_positive": 0,
+                "B_negative": 0,
+                "B_positive": 0,
+                "AB_negative": 0,
+                "AB_positive": 0
+            };
+
+            // Dictionary to store the number of patients of each blood type
+            patients = {
+                "O_negative": 0,
+                "O_positive": 0,
+                "A_negative": 0,
+                "A_positive": 0,
+                "B_negative": 0,
+                "B_positive": 0,
+                "AB_negative": 0,
+                "AB_positive": 0
+            };
+
+
+            //do something
+            var input = document.getElementById("blood_units").value.split(" ");
+            i = 0;
+
+            //do something
+            var input2 = document.getElementById("patients").value.split(" ");
+            console.log(input2)
+
+            // Updates the number of units of each blood type from the input read
+            blood_units["O_negative"] = input[0];
+            blood_units["O_positive"] = input[1];
+            blood_units["A_negative"] = input[2];
+            blood_units["A_positive"] = input[3];
+            blood_units["B_negative"] = input[4];
+            blood_units["B_positive"] = input[5];
+            blood_units["AB_negative"] = input[6];
+            blood_units["AB_positive"] = input[7];
+
+            // Updates the number of patients of each blood type from the input read
+            patients["O_negative"] = input2[0];
+            patients["O_positive"] = input2[1];
+            patients["A_negative"] = input2[2];
+            patients["A_positive"] = input2[3];
+            patients["B_negative"] = input2[4];
+            patients["B_positive"] = input2[5];
+            patients["AB_negative"] = input2[6];
+            patients["AB_positive"] = input2[7];
+
+            console.log(blood_units);
+            console.log(patients);
+
+            // Initializes the variable to count the number of patients that recieve blood
+            let patient_counter = 0;
+
+            // For O-negative blood type
+            // Checks if O_negative blood units are left for patient and then processes it
+            while (patients.O_negative != 0) {
+                if (blood_units.O_negative == 0) {
+                    break;
+                }
+                blood_units.O_negative--;
+                patients.O_negative--;
+                patient_counter++;
+            }
+
+            // For O-positive blood type
+            // Checks if O_positive or O_negative blood units are left for patient and then processes it
+            while (patients.O_positive != 0) {
+                if (blood_units.O_positive == 0) {
+                    if (blood_units.O_negative == 0) {
+                        break;
+                    }
+                    blood_units.O_negative--;
+                    patients.O_positive--;
+                    patient_counter++;
+                } else {
+                    blood_units.O_positive--;
+                    patients.O_positive--;
+                    patient_counter++;
+                }
+            }
+
+            // For A-negative blood type
+            // Checks if A_negative or O_negative blood units are left for patient and then processes it
+            while (patients.A_negative != 0) {
+                if (blood_units.A_negative == 0) {
+                    if (blood_units.O_negative == 0) {
+                        break;
+                    }
+                    blood_units.O_negative--;
+                    patients.A_negative--;
+                    patient_counter++;
+                } else {
+                    blood_units.A_negative--;
+                    patients.A_negative--;
+                    patient_counter++;
+                }
+            }
+
+            // For A-positive blood type
+            // Checks if A_positive, A_negative, O_positive or O_negative blood units are left for patient and then processes it
+            while (patients.A_positive != 0) {
+                if (blood_units.A_positive == 0) {
+                    if (blood_units.A_negative == 0) {
+                        if (blood_units.O_positive == 0) {
+                            if (blood_units.O_negative == 0) {
+                                break;
+                            } else {
+                                blood_units.O_negative--;
+                                patients.A_positive--;
+                                patient_counter++;
+                            }
+                        } else {
+                            blood_units.O_positive--;
+                            patients.A_positive--;
+                            patient_counter++;
+                        }
+                    } else {
+                        blood_units.A_negative--;
+                        patients.A_positive--;
+                        patient_counter++;
+                    }
+                } else {
+                    blood_units.A_positive--;
+                    patients.A_positive--;
+                    patient_counter++;
+                }
+            }
+
+            // For B-negative blood type
+            // Checks if B_negative or O_negative blood units are left for patient and then processes it
+            while (patients.B_negative != 0) {
+                if (blood_units.B_negative == 0) {
+                    if (blood_units.O_negative == 0) {
+                        break;
+                    }
+                    blood_units.O_negative--;
+                    patients.B_negative--;
+                    patient_counter++;
+                } else {
+                    blood_units.B_negative--;
+                    patients.B_negative--;
+                    patient_counter++;
+                }
+            }
+
+            // For B-positive blood type
+            // Checks if B_positive, B_negative, O_positive or O_negative blood units are left for patient and then processes it
+            while (patients.B_positive != 0) {
+                if (blood_units.B_positive == 0) {
+                    if (blood_units.B_negative == 0) {
+                        if (blood_units.O_positive == 0) {
+                            if (blood_units.O_negative == 0) {
+                                break;
+                            } else {
+                                blood_units.O_negative--;
+                                patients.B_positive--;
+                                patient_counter++;
+                            }
+                        } else {
+                            blood_units.O_positive--;
+                            patients.B_positive--;
+                            patient_counter++;
+                        }
+                    } else {
+                        blood_units.B_negative--;
+                        patients.B_positive--;
+                        patient_counter++;
+                    }
+                } else {
+                    blood_units.B_positive--;
+                    patients.B_positive--;
+                    patient_counter++;
+                }
+            }
+
+            // For AB-negative blood type
+            // Checks if AB_negative, B_negative, A_negative, or O_negative blood units are left for patient and then processes it
+            while (patients.AB_negative != 0) {
+                if (blood_units.AB_negative == 0) {
+                    if (blood_units.B_negative == 0) {
+                        if (blood_units.A_negative == 0) {
+                            if (blood_units.O_negative == 0) {
+                                break;
+                            } else {
+                                blood_units.O_negative--;
+                                patients.AB_negative--;
+                                patient_counter++;
+                            }
+                        } else {
+                            blood_units.A_negative--;
+                            patients.AB_negative--;
+                            patient_counter++;
+                        }
+                    } else {
+                        blood_units.B_negative--;
+                        patients.AB_negative--;
+                        patient_counter++;
+                    }
+                } else {
+                    blood_units.AB_negative--;
+                    patients.AB_negative--;
+                    patient_counter++;
+                }
+            }
+
+            // For AB-positive blood type
+            // Checks if AB_positive, AB_negative, B_positive, B_negative, A_positive, A_negative,
+            //   O_positive, or O_negative blood units are left for patient and then processes it
+            while (patients.AB_positive != 0) {
+                if (blood_units.AB_positive == 0) {
+                    if (blood_units.AB_negative == 0) {
+                        if (blood_units.B_positive == 0) {
+                            if (blood_units.B_negative == 0) {
+                                if (blood_units.A_positive == 0) {
+                                    if (blood_units.A_negative == 0) {
+                                        if (blood_units.O_positive == 0) {
+                                            if (blood_units.O_negative == 0) {
+                                                break;
+                                            } else {
+                                                blood_units.O_negative--;
+                                                patients.AB_positive--;
+                                                patient_counter++;
+                                            };
+                                        } else {
+                                            blood_units.O_positive--;
+                                            patients.AB_positive--;
+                                            patient_counter++;
+                                        };
+                                    } else {
+                                        blood_units.A_negative--;
+                                        patients.AB_positive--;
+                                        patient_counter++;
+                                    };
+                                } else {
+                                    blood_units.A_positive--;
+                                    patients.AB_positive--;
+                                    patient_counter++;
+                                }
+                            } else {
+                                blood_units.B_negative--;
+                                patients.AB_positive--;
+                                patient_counter++;
+                            }
+                        } else {
+                            blood_units.B_positive--;
+                            patients.AB_positive--;
+                            patient_counter++;
+                        }
+                    } else {
+                        blood_units.AB_negative--;
+                        patients.AB_positive--;
+                        patient_counter++;
+                    }
+                } else {
+                    blood_units.AB_positive--;
+                    patients.AB_positive--;
+                    patient_counter++;
+                }
+            }
+
+            console.log(patient_counter);
+            document.getElementById('output').innerHTML = patient_counter;
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+    <label for="name">Blood Units: </label>
+    <input type="text" id="blood_units" onblur="doneTyping()">
+    <label for="name">Patients: </label>
+    <input type="text" id="patients" onblur="doneTyping()">
+    <br> <br>
+    <label>Number of Patients: </label> <strong><text id="output"></text></strong>
+
+</body>
+
+</html>
