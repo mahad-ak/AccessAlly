@@ -1,0 +1,130 @@
+// Reads file synchronously to process file input
+const { readFileSync, promises: fsPromises } = require('fs');
+function syncReadFile(filename) {
+    const contents = readFileSync(filename, 'utf-8');
+    const arr = contents;
+    return arr;
+}
+
+// Reads input from file passed into command line
+if (isNaN(process.argv[2])) {
+    input = syncReadFile(process.argv[2]);
+} else { // Reads input from the command line
+    input = process.argv[2];
+}
+
+// Counts the number of arithmetic sequences in the digits
+let seq_counter = 0;
+
+// Finds the remainder of input and 720 in order to find final time after all revolutions
+// This would ensure that when processing large inputs, the program doesn't have to repeat same revolutions, helping us making the program more efficient
+let duration = input % 720;
+
+// Stores the number of revolutions of clock based on input to multiply with seq_counter of 1 revolution, to make program more efficient
+let revolutions = Math.floor(input / 720);
+
+// Computes the hours and minutes to be added from the input minutes
+let hours_to_add = Math.floor(duration / 60);
+let mins_to_add = Math.floor(duration % 60);
+
+// Initializes an array which stores the digits of the time
+let time = [1, 2, 0, 0];
+
+// Extracting the time of the hour and minutes from the array
+let hours = (time[0] * 10) + time[1];
+let mins = (time[2] * 10) + time[3];
+
+// Adds the new mins from the input to the mins of the clock
+mins += mins_to_add;
+// Computes remainder of the total mins and 60, to find the new minute
+mins = mins % 60
+// Computes the hours to be added based on the total mins to be added
+hours_to_add += Math.floor(mins/60);
+hours += hours_to_add;
+
+// Computes remainder of hours and 12, to keep hours in 12 hour clock format
+hours = hours % 12;
+if (hours == 0) hours = 12;
+
+if (hours < 10) {
+    time[0] = 0;
+    time[1] = hours;
+} else {
+    time[0] = 1;
+    time[1] = hours % 10;
+}
+if (mins < 10) {
+    time[2] = 0;
+    time[3] = mins;
+} else {
+    time[2] = Math.floor(mins / 10);
+    time[3] = mins % 10;
+}
+
+// Conditions assigns rev_checker a value based on how many revolutions would be completed by the clock
+if (revolutions > 0) {
+    rev_checker = 720;
+} else {
+    rev_checker = 0;
+}
+
+// This boolean checks if the revolutions have been accounted for in the seq_counter in the while loop below
+let added_rev = false
+
+// The array which is incremented to count the arithmetic sequences
+let time_tracker = [1, 2, 0, 0];
+
+// This while loop repeats until the time doesn't match with the final time or the clock revolutions haven't been accounted for
+while (time_tracker[0] != time[0] || time_tracker[1] != time[1] ||
+       time_tracker[2] != time[2] || time_tracker[3] != time[3] || rev_checker != 0) {
+
+        // Increments the minute index
+        time_tracker[3]++;
+
+        // Checks if one revolution has been completed, if not, then decrements rev_checker
+        if (rev_checker != 0) rev_checker--;
+
+        // Checks if first revolution has been completed. If yes, then the number of arithmetic sequences is multiplied by
+        // the total number of revolutions to find the total arithmetic sequences
+        if (rev_checker == 0 && !added_rev) {
+            seq_counter *= revolutions;
+            added_rev = true;
+        }
+
+        // Checks if the minute index is greater than 9 so that 1 is carried over to next index
+        if (time_tracker[3] > 9) {
+            time_tracker[3] = 0;
+            time_tracker[2]++;
+        }
+        // Checks if the minute index is greater than 5 so that 1 is carried over to hour index
+        if (time_tracker[2] > 5) {
+            time_tracker[2] = 0;
+            time_tracker[1]++;
+        }
+        // Checks if the hour index is greater than 12 so that hour is changed to 1.
+        if (time_tracker[0] == 1 && time_tracker[1] > 2 ) {
+            time_tracker[0] = 0;
+            time_tracker[1] = 1;
+        }
+        // Checks if the hour index is greater than 9 so that hour can display 10.
+        if (time_tracker[1] > 9) {
+            time_tracker[1] = 0;
+            time_tracker[0]++;
+        }
+
+        // Checks if an arithmetic sequence is created by the digits
+        if (time_tracker[0] == 0) {
+            if (time_tracker[3]-time_tracker[2] == time_tracker[2]-time_tracker[1]) {
+                seq_counter++;
+            }
+        } else {
+            if ((time_tracker[3]-time_tracker[2] == time_tracker[2]-time_tracker[1]) && 
+                (time_tracker[2]-time_tracker[1] == time_tracker[1]-time_tracker[0])) {
+                seq_counter++;
+            }
+        }
+    }
+
+console.log(seq_counter);
+
+
